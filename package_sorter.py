@@ -11,7 +11,7 @@ BULKY_DIMENSION_THRESHOLD = 150  # cm — any dimension at or above this is bulk
 HEAVY_MASS_THRESHOLD = 20  # kg — mass at or above this is heavy
 
 
-def sort(width: float, height: float, length: float, mass: float, verbose: bool = False) -> str:
+def sort(width: float, height: float, length: float, mass: float) -> str:
     """
     Dispatch a package to the correct stack based on volume and mass.
 
@@ -20,7 +20,6 @@ def sort(width: float, height: float, length: float, mass: float, verbose: bool 
         height: Package height in centimeters
         length: Package length in centimeters
         mass: Package mass in kilograms
-        verbose: If True, print debug output (default: False)
 
     Returns:
         Stack name: "STANDARD", "SPECIAL", or "REJECTED"
@@ -38,45 +37,24 @@ def sort(width: float, height: float, length: float, mass: float, verbose: bool 
     # Heavy: mass ≥ 20 kg
     is_heavy = mass >= HEAVY_MASS_THRESHOLD
 
-    if verbose:
-        print(f"Package: {width}×{height}×{length} cm, mass={mass} kg")
-        print(f"Volume: {volume:,.0f} cm³")
-        print(f"Bulky: {is_bulky} (vol≥{BULKY_VOLUME_THRESHOLD:,} or dim≥{BULKY_DIMENSION_THRESHOLD})")
-        print(f"Heavy: {is_heavy} (mass≥{HEAVY_MASS_THRESHOLD})")
-
     # Dispatch logic: REJECTED first (both), then SPECIAL (either), else STANDARD
     if is_bulky and is_heavy:
-        if verbose:
-            print("→ REJECTED")
         return "REJECTED"
     if is_bulky or is_heavy:
-        if verbose:
-            print("→ SPECIAL")
         return "SPECIAL"
-    if verbose:
-        print("→ STANDARD")
     return "STANDARD"
 
 
 # Run example cases when executed directly (e.g. python package_sorter.py)
 if __name__ == "__main__":
-    # STANDARD: neither bulky nor heavy
-    print("=== Example 1: STANDARD (small & light) ===")
-    sort(10, 10, 10, 5, verbose=True)
-    print()
-    print("=== Example 2: STANDARD (near limits) ===")
-    sort(149, 10, 10, 19, verbose=True)
-    print()
-    # SPECIAL: bulky OR heavy (but not both)
-    print("=== Example 3: SPECIAL (bulky by volume) ===")
-    sort(100, 100, 100, 10, verbose=True)
-    print()
-    print("=== Example 4: SPECIAL (bulky by dimension) ===")
-    sort(150, 10, 10, 10, verbose=True)
-    print()
-    print("=== Example 5: SPECIAL (heavy only) ===")
-    sort(10, 10, 10, 20, verbose=True)
-    print()
-    # REJECTED: both bulky AND heavy
-    print("=== Example 6: REJECTED (bulky + heavy) ===")
-    sort(100, 100, 100, 20, verbose=True)
+    examples = [
+        ((10, 10, 10, 5), "STANDARD (small & light)"),
+        ((149, 10, 10, 19), "STANDARD (near limits)"),
+        ((100, 100, 100, 10), "SPECIAL (bulky by volume)"),
+        ((150, 10, 10, 10), "SPECIAL (bulky by dimension)"),
+        ((10, 10, 10, 20), "SPECIAL (heavy only)"),
+        ((100, 100, 100, 20), "REJECTED (bulky + heavy)"),
+    ]
+    for (w, h, l, m), label in examples:
+        result = sort(w, h, l, m)
+        print(f"sort{w, h, l, m} → {result}  ({label})")

@@ -8,7 +8,7 @@ A robotic arm package dispatcher that sorts packages into stacks based on volume
 git clone https://github.com/sagardesai90/SmarterTechnology-primer.git
 cd SmarterTechnology-primer
 python -m unittest test_package_sorter -v
-python package_sorter.py   # run examples with verbose output
+python package_sorter.py   # run examples
 ```
 
 ## Rules
@@ -40,9 +40,6 @@ sort(10, 10, 10, 20)  # → "SPECIAL"
 
 # Rejected: both bulky and heavy
 sort(100, 100, 100, 20)  # → "REJECTED"
-
-# Optional: verbose=True for debug output
-sort(100, 100, 100, 20, verbose=True)
 ```
 
 ## Run Tests
