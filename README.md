@@ -2,6 +2,8 @@
 
 A robotic arm package dispatcher that sorts packages into stacks based on volume and mass.
 
+**[Try it in Interview Sandbox](https://interviewsandbox.com/box/sE8IqhrBxf)** — run and test the code in your browser.
+
 ## Quick Start
 
 ```bash
